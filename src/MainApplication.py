@@ -1,8 +1,9 @@
 import Services
 
 def main():
-    Services.GCPService
-    
+    # TODO: whole logic
+    pass
+
 
 if __name__ == "__main__":
     main()
