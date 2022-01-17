@@ -1,4 +1,4 @@
-import Services
+import Resources.StocksResources as Stocks
 
 def main():
     # TODO: whole logic
