@@ -1,22 +1,15 @@
-import json
-from google.cloud import bigquery
-from google.oauth2 import service_account
+from src.Clients.GCPClient import GCPClient
+import pandas_gbq
+
 
 class GCPRequest:
 
-    def __init__(self) -> None:
-        self.key = 'key/key.json' # GCP SA
-        self.project_id = self.get_project()
-        self.client = self.get_client()
-        # TODO: bigQuery query requests
-    
-    def get_project(self):
-        with open(self.key) as f:
-            project_id = json.load(f)['project_id']
-            print(project_id)
-        f.close()
-        return project_id
-    
-    def get_client(self):
-        client = service_account.Credentials.from_service_account_file(self.key)
-        return client
+    def __init__(self, df, destination_table) -> None:
+        self.destination_table = destination_table
+        self.client = GCPClient()
+        self.data_frame = df
+
+    def to_gbq(self):
+        pandas_gbq.to_gbq(self.data_frame, destination_table=self.destination_table,
+                          project_id=self.client.project_id, credentials=self.client.creds,
+                          if_exists="replace")
