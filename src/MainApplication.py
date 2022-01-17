@@ -1,8 +1,9 @@
 import Resources.StocksResources as Stocks
 
+
 def main():
-    # TODO: whole logic
-    pass
+    print("Starting project")
+    Stocks.get_tickers()
 
 
 if __name__ == "__main__":

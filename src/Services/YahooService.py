@@ -1,1 +1,1 @@
-import Models.YahooRequest
+import src.Models.YahooRequest as yr

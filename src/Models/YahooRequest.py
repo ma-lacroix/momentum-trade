@@ -5,7 +5,7 @@ from pandas_datareader import data as dr
 
 class YahooRequest:
 
-    def __init__(self,security,start,end) -> None:
+    def __init__(self,security,start,end) -> str:
         self.service = 'yahoo'
         self.security = security
         self.start = start
