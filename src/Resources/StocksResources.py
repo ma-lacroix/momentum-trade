@@ -1,8 +1,5 @@
 import src.Services.GCPService as GCPService
-import src.Services.StocksServices as StockService
-import src.Services.YahooService as YahooService
 import src.Services.SP500Service as SP500Service
-import pandas as pd
 
 
 def get_sp500_tickers():
