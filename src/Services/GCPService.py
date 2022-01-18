@@ -2,8 +2,8 @@ from src.Models.GCPRequest import GCPRequest
 from src.Models.GCPResponse import GCPResponse
 
 
-def upload_df_to_bigquery(df, destination):
-    request = GCPRequest(df, destination)
+def upload_df_to_bigquery(df, destination, write_type):
+    request = GCPRequest(df, destination, write_type)
     request.to_gbq()
 
 
