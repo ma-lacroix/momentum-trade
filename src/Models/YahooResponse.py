@@ -4,7 +4,7 @@ import numpy as np
 from pandas_datareader import data as dr
 
 
-class YahooRequest:
+class YahooResponse:
 
     def __init__(self, security, start, end) -> None:
         self.service = 'yahoo'
