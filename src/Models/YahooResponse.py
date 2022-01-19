@@ -16,9 +16,9 @@ class YahooResponse:
     def get_data(self):
         df = pd.DataFrame()
         try:
-            df = np.round(dr.DataReader(self.security, self.service, self.start, self.end)
-                          [['High', 'Low', 'Open', 'Close', 'Volume']], 2)\
-                .reset_index()
+            df = dr.DataReader(self.security, self.service, self.start, self.end) \
+                [['High', 'Low', 'Open', 'Close', 'Volume']].reset_index()
+
             df['Symbol'] = self.security
             df['Date'] = pd.to_datetime(df['Date']).dt.date
         except ValueError as err:
