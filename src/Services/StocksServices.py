@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 from src.Models.StockData import StockData
+from src.Utils.functions import timeit
 
 
+@timeit
 def calculate_roc(df, start_date, end_date):
     all_results = []
     symbols = list(df['Symbol'].unique())
