@@ -1,4 +1,3 @@
-import math
 import pandas as pd
 import datetime as dt
 
@@ -16,7 +15,7 @@ class StockData:
         self.roc_close_open_log10 = roc_close_open_log10
         self.roc_avg_daily_change = roc_avg_daily_change
         self.roc_avg_daily_change_log10 = roc_avg_daily_change_log10
-        self.df = pd.DataFrame.from_dict({'Results_date': [dt.datetime.today().strftime('%Y-%m-%d')],
+        self.df = pd.DataFrame.from_dict({'Compute_date': [dt.datetime.today().strftime('%Y-%m-%d')],
                                           'Symbol': [self.name],
                                           'Start_date': [self.start_date],
                                           'End_date': [self.end_date],

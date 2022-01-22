@@ -3,21 +3,8 @@ import pandas as pd
 import math
 from src.Models.StockData import StockData
 from src.Utils.functions import timeit
+from src.Utils.functions import division, log10
 
-
-def division(val1, val2):
-    # some stock data might be null
-    if val2 <= 0:
-        return 0
-    else:
-        return round((val1 / val2 - 1) * 100, 3)
-
-
-def log10(val1):
-    if abs(val1) == 0:
-        return 0
-    else:
-        return math.log10(abs(val1))
 
 @timeit
 def calculate_roc(df, start_date, end_date):
@@ -25,7 +12,6 @@ def calculate_roc(df, start_date, end_date):
     symbols = list(df['Symbol'].unique())
 
     for symbol in symbols:
-        print(symbol)
         # extract the data from the DF
         current_close = df[(df['Symbol'] == symbol) & (df['Date'] == end_date)]['Close'].item()
         previous_close = df[(df['Symbol'] == symbol) & (df['Date'] == start_date)]['Close'].item()
