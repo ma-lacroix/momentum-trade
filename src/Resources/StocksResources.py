@@ -22,13 +22,13 @@ def get_sp500_tickers():
 def get_sp500_prices():
     query_tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500`"
     symbols = list(GCPService.get_df_from_bigquery(query_string=query_tickers)['Symbol'])
-    prices = YahooService.send_yahoo_request(symbols, get_date(30), get_date(1))
+    prices = YahooService.send_yahoo_request(symbols, get_date(3), get_date(2))
     # TODO: write_type should be "append" when done testing
-    GCPService.upload_df_to_bigquery(df=prices, destination="tickers.prices", write_type="replace")
+    GCPService.upload_df_to_bigquery(df=prices, destination="tickers.prices", write_type="append")
 
 
 def get_roc():
     query_roc_data = "SELECT * FROM tickers.prices"
     roc_data = GCPService.get_df_from_bigquery(query_string=query_roc_data)
-    all_results = StockService.calculate_roc(roc_data, get_date(30), get_date(1))
+    all_results = StockService.calculate_roc(roc_data, get_date(30), get_date(2))
     GCPService.upload_df_to_bigquery(df=np.round(all_results, 3), destination="tickers.roc_values", write_type="replace")

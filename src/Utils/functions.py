@@ -6,7 +6,7 @@ def timeit(func):
         start = time.time()
         result = func(*args, **kw)
         end = time.time()
-        print(f"{func.__name__} took %2.4f {start - end} seconds")
+        print(f"Function -> {func.__name__} took {round(start - end,2)} seconds")
         return result
 
     return timed
