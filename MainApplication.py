@@ -7,11 +7,9 @@ import datetime as dt
 def main():
     print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
     end = '2022-01-21'
-    backfill_window = 60
-    roc_window = 30
-    Stocks.get_sp500_tickers()
-    Stocks.get_sp500_prices(backfill_window, end)
-    Stocks.get_roc(roc_window, end)
+    # Stocks.get_sp500_tickers()
+    Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
+    Stocks.get_roc(30, end)
 
 
 if __name__ == "__main__":

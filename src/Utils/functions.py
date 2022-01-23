@@ -10,7 +10,6 @@ def timeit(func):
         end = time.time()
         print(f"Function -> {func.__name__} took {round(start - end,2)} seconds")
         return result
-
     return timed
 
 
