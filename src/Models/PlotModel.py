@@ -2,23 +2,27 @@ import plotly.offline as pyo
 import plotly.graph_objs as go
 
 
-class StockPlot:
+# TODO: think about graph types and classes
+class StockLinePlot:
 
-    def __init__(self, title, x, y, mode, filename):
+    def __init__(self, title, data, mode, filename):
         self.title = title
-        self.x = x
-        self.y = y
+        self.data = data
         self.mode = mode
         self.filename = filename
 
     def gen_plot(self):
-        trace = go.Scatter(
-            x=self.x,
-            y=self.y,
-            mode=self.mode
-        )
+        symbols = list(self.data.Symbol.unique())
+        for symbol in symbols:
+            print(self.data[self.data.Symbol == symbol].Close)
+        traces = [go.Scatter(
+            x=self.data[self.data.Symbol == symbol].Date,
+            y=self.data[self.data.Symbol == symbol].Close,
+            mode=self.mode,
+            name=symbol
+        ) for symbol in symbols]
         lay = go.Layout(
             title=self.title
         )
-        fig = go.Figure(data=trace, layout=lay)
+        fig = go.Figure(data=traces, layout=lay)
         pyo.plot(fig, filename=self.filename)
