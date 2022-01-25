@@ -32,6 +32,7 @@ def get_sp500_prices(backfill, end_date):
 
 
 def get_roc(window, end_date):
+    # TODO: something to do a sanity check for the produced data
     query_roc_data = "SELECT * FROM tickers.prices"
     roc_data = GCPService.get_df_from_bigquery(query_string=query_roc_data)
     all_results = StockService.calculate_roc(roc_data, get_date(window, end_date), end_date)
