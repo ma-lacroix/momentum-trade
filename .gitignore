@@ -170,6 +170,7 @@ dmypy.json
 # data
 *.json
 *.csv
+*.html
 
 # Pycharm config files
 runConfig.sh
