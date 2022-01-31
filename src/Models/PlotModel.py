@@ -12,9 +12,9 @@ class StockPlot:
         self.roc = roc
         self.mode = mode
         self.filename = filename
+        self.symbols = list(self.prices.Symbol.unique())
 
     def gen_plot(self):
-        symbols = list(self.prices.Symbol.unique())
         # TODO: make 'fig' customizable in the class
         fig = make_subplots(rows=2,
                             cols=2,
@@ -24,7 +24,7 @@ class StockPlot:
                             vertical_spacing=0.1,
                             specs=[[{}, {}], [{"colspan": 2}, None]],
                             subplot_titles=['Daily Close', 'Daily Volumes', 'ROC Close'])
-        for symbol in symbols:
+        for symbol in self.symbols:
             fig.add_trace(go.Scatter(
                     x=self.prices[self.prices.Symbol == symbol].Date,
                     y=self.prices[self.prices.Symbol == symbol].Close,
