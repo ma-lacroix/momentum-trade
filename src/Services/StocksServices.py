@@ -35,3 +35,7 @@ def calculate_roc(df, start_date, end_date):
         all_results.append(StockData(symbol, start_date, end_date, roc_close, roc_high_low, roc_close_open,
                                      roc_close_open_log10, roc_avg_daily_change, roc_avg_daily_change_log10).df)
     return pd.concat(all_results).reset_index(drop=True)
+
+
+def calculate_sharpe():
+    pass
