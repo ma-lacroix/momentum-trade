@@ -1,10 +1,9 @@
-from src.Utils.functions import get_date, compile_cpp
+from src.Utils.functions import get_date, compile_cpp, bq_pivot_table
 import src.Services.GCPService as GCPService
 import src.Services.SP500Service as SP500Service
 import src.Services.YahooService as YahooService
 import src.Services.StocksServices as StockService
 import numpy as np
-import os
 import datetime as dt
 
 
@@ -42,9 +41,12 @@ def get_roc(window, end_date):
 
 
 def get_sharpe():
-    lib = 'src/Utils/cpp_sharpe'
-    if not os.path.exists(f'{lib}.so'):  # compile c++ code
-        compile_cpp(libName=lib)
-    query_roc_data = "SELECT * FROM tickers.prices"
-    sharpe_data = GCPService.get_df_from_bigquery(query_string=query_roc_data)
-    #
+    compile_cpp()  # compile c++ code
+    query_unique_symbols = "SELECT DISTINCT(Symbol) AS Symbols FROM tickers.prices"
+    unique_symbols = list(GCPService.get_df_from_bigquery(query_string=query_unique_symbols)['Symbols'])
+    sharpe_data = GCPService.get_df_from_bigquery(query_string=bq_pivot_table(unique_symbols))
+    StockService.calculate_sharpe(sharpe_data)
+    sharpe_df = StockService.gen_sharpe_df(unique_symbols)
+    GCPService.upload_df_to_bigquery(df=sharpe_df, destination="tickers.sharpe_values",
+                                     write_type="replace")
+

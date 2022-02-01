@@ -65,7 +65,7 @@ std::vector<float> get_sharpe_ratios(int simulations, std::vector<float> log_ret
 
 void write_to_File(std::vector<float> vec){
     std::ofstream outdata;
-    outdata.open("temp_data/ratios.csv");
+    outdata.open("src/Utils/cpp_ratios.csv");
     for(auto& element: vec){
         outdata << element << std::endl;
     }
@@ -86,8 +86,8 @@ void showSharpe(int simulations, float *dummy_returns,float *dummy_std, int arr_
         stds.push_back(dummy_std[i]);
     }
 
-    portfolio = get_sharpe_ratios(simulations,returns,stds); // 10 just a placeholder
-
+    portfolio = get_sharpe_ratios(simulations,returns,stds);
+    std::cout << "Writing results to file..." <<std::endl;
     write_to_File(portfolio);
 }
 

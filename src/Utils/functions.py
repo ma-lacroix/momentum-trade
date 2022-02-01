@@ -39,6 +39,24 @@ def log10(val1):
 
 
 def compile_cpp(libName='src/Utils/cpp_sharpe', sourceFile='src/Utils/sharpe'):
-    os.system("g++ --std=c++17 -shared -Wl,-install_name,{n}.so -o {n}.so -fPIC {s}.cpp " \
-              "-I/Library/Frameworks/Python.framework/Versions/3.9/include/python3.9" \
-              .format(n=libName, s=sourceFile))
+    if not os.path.exists(f'{libName}.so'):
+        os.system("g++ --std=c++17 -shared -Wl,-install_name,{n}.so -o {n}.so -fPIC {s}.cpp " \
+                  "-I/Library/Frameworks/Python.framework/Versions/3.9/include/python3.9" \
+                  .format(n=libName, s=sourceFile))
+
+
+def bq_pivot_table(aList):
+    query = """
+    SELECT
+    * EXCEPT(buffer)
+    FROM
+        (SELECT
+        Date,"""
+    for s in aList:
+        query += """
+        SUM(IF(Symbol='{a}',Close,0)) AS {a},""".format(a=s)
+    query += """
+        'q' AS buffer, 
+        FROM tickers.prices
+        GROUP BY 1)"""
+    return query
