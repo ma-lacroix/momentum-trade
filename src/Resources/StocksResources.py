@@ -40,13 +40,41 @@ def get_roc(window, end_date):
                                      write_type="replace")
 
 
-def get_sharpe():
+def get_sharpe(end_date, top):
     compile_cpp()  # compile c++ code
-    query_unique_symbols = "SELECT DISTINCT(Symbol) AS Symbols FROM tickers.prices"
+    query_unique_symbols = f"""
+    SELECT DISTINCT(Symbol) AS Symbols FROM
+        (SELECT Symbol FROM `tickers.roc_values`
+        WHERE Compute_date = CAST(current_date() AS STRING)
+        ORDER BY roc_close DESC) 
+    LIMIT {top}"""
     unique_symbols = list(GCPService.get_df_from_bigquery(query_string=query_unique_symbols)['Symbols'])
     sharpe_data = GCPService.get_df_from_bigquery(query_string=bq_pivot_table(unique_symbols))
     StockService.calculate_sharpe(sharpe_data)
-    sharpe_df = StockService.gen_sharpe_df(unique_symbols)
+    sharpe_df = StockService.gen_sharpe_df(unique_symbols, end_date)
     GCPService.upload_df_to_bigquery(df=sharpe_df, destination="tickers.sharpe_values",
                                      write_type="replace")
 
+
+def gen_portfolio(max_budget):
+    query_portfolio = """
+    WITH last_close AS (
+      SELECT t1.Symbol AS Symbol, t1.Date AS Date, Close
+      FROM `tickers.prices` t1
+      JOIN (SELECT Symbol, MAX(Date) AS Date FROM `tickers.prices` GROUP BY 1) t2
+      ON t1.Symbol = t2.Symbol AND t1.Date = t2.Date
+    ), roc_values AS (
+      SELECT t1.Symbol AS Symbol, roc_close, roc_avg_daily_change_log10
+      FROM `tickers.roc_values` t1
+      JOIN (SELECT Symbol, MAX(End_date) AS Date FROM `tickers.roc_values` GROUP BY 1) t2
+      ON t1.Symbol = t2.Symbol AND t1.End_date = t2.Date
+    ), sharpe_values AS (
+      SELECT Symbol, Sharpe FROM `tickers.sharpe_values` 
+    )
+    SELECT * FROM sharpe_values JOIN (SELECT * FROM roc_values) USING(Symbol) 
+        JOIN (SELECT * FROM last_close) USING(Symbol) ORDER BY Sharpe DESC
+    """
+    portfolio_data = GCPService.get_df_from_bigquery(query_string=query_portfolio)
+    portfolio_df = StockService.gen_portfolio_df(portfolio_data, max_budget)
+    GCPService.upload_df_to_bigquery(df=portfolio_df, destination="tickers.portfolio",
+                                     write_type="replace")

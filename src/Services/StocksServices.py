@@ -56,15 +56,23 @@ def calculate_sharpe(df):
     cpp_sharpe.showSharpe(simulations, arr1, arr2, arr_size)
 
 
-def gen_sharpe_df(unique_symbols):
+def gen_sharpe_df(unique_symbols, end_date):
     # TODO: add dates to DF
-    # TODO: convert ratio to float64
     fdict = {'Symbol': [], 'Sharpe': []}
     ratios = open("src/Utils/cpp_ratios.csv")
     for row in zip(unique_symbols, csv.reader(ratios)):
         fdict['Symbol'].append(row[0])
-        fdict['Sharpe'].append(row[1][0][0:5])
+        fdict['Sharpe'].append(float(row[1][0][0:5]))
     final_df = pd.DataFrame.from_dict(fdict)
+    final_df['Date'] = end_date
     ratios.close()
     os.system("rm src/Utils/cpp_ratios.csv")
     return final_df
+
+
+def gen_portfolio_df(df, max_budget):
+    for i in range(len(df)):
+        df.loc[i, "Securities"] = int((max_budget / df.loc[i, "Close"]) * df.loc[i, "Sharpe"])
+        max_budget -= df.loc[i, "Securities"] * df.loc[i, "Close"]
+    print(df)
+    return df

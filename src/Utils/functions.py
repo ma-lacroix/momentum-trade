@@ -51,12 +51,13 @@ def bq_pivot_table(aList):
     * EXCEPT(buffer)
     FROM
         (SELECT
-        Date,"""
+            Date,"""
     for s in aList:
         query += """
-        SUM(IF(Symbol='{a}',Close,0)) AS {a},""".format(a=s)
+            SUM(IF(Symbol='{a}',Close,0)) AS {a},""".format(a=s)
     query += """
-        'q' AS buffer, 
-        FROM tickers.prices
-        GROUP BY 1)"""
+            'q' AS buffer, 
+        FROM `tickers.prices`
+        GROUP BY 1)
+    """
     return query
