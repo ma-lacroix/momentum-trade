@@ -25,7 +25,7 @@ def get_sp500_prices(backfill, end_date):
     print(f"{backfill} days missing")
     if backfill > 0:
         # TODO: remove the LIMIT condition
-        query_tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500` ORDER BY 1 LIMIT 10"
+        query_tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500` ORDER BY 1"
         symbols = list(GCPService.get_df_from_bigquery(query_string=query_tickers)['Symbol'])
         prices = YahooService.send_yahoo_request(symbols, get_date(backfill, end_date), end_date)
         GCPService.upload_df_to_bigquery(df=prices, destination="tickers.prices", write_type="append")
@@ -33,9 +33,10 @@ def get_sp500_prices(backfill, end_date):
 
 def get_roc(window, end_date):
     # TODO: something to do a sanity check for the produced data
-    query_roc_data = "SELECT * FROM tickers.prices"
+    start_date = get_date(window, end_date)
+    query_roc_data = f"SELECT * FROM tickers.prices WHERE Date >= '{start_date}'"
     roc_data = GCPService.get_df_from_bigquery(query_string=query_roc_data)
-    all_results = StockService.calculate_roc(roc_data, get_date(window, end_date), end_date)
+    all_results = StockService.calculate_roc(roc_data, start_date, end_date)
     GCPService.upload_df_to_bigquery(df=np.round(all_results, 3), destination="tickers.roc_values",
                                      write_type="replace")
 

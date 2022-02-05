@@ -46,6 +46,7 @@ def compile_cpp(libName='src/Utils/cpp_sharpe', sourceFile='src/Utils/sharpe'):
 
 
 def bq_pivot_table(aList):
+    # transposes the stock prices table
     query = """
     SELECT
     * EXCEPT(buffer)

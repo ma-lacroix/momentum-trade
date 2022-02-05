@@ -4,11 +4,12 @@ import datetime as dt
 
 class StockData:
 
-    def __init__(self, name, start_date, end_date, roc_close, roc_high_low, roc_close_open,
+    def __init__(self, name, start_date, end_date, quality, roc_close, roc_high_low, roc_close_open,
                  roc_close_open_log10, roc_avg_daily_change, roc_avg_daily_change_log10) -> None:
         self.name = name
         self.start_date = start_date
         self.end_date = end_date
+        self.quality = quality  # data quality flag - some stocks don't have data for a given day
         self.roc_close = roc_close
         self.roc_high_low = roc_high_low
         self.roc_close_open = roc_close_open
@@ -19,6 +20,7 @@ class StockData:
                                           'Symbol': [self.name],
                                           'Start_date': [self.start_date],
                                           'End_date': [self.end_date],
+                                          'Quality': [self.quality],
                                           'roc_close': [self.roc_close],
                                           'roc_high_low': [self.roc_high_low],
                                           'roc_close_open': [self.roc_close_open],
