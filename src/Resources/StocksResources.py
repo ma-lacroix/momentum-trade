@@ -44,7 +44,7 @@ def get_roc(window, end_date):
 def get_sharpe(end_date, top):
     compile_cpp()  # compile c++ code
     query_unique_symbols = f"""
-    SELECT DISTINCT(Symbol) AS Symbols FROM
+    SELECT Symbol AS Symbols FROM
         (SELECT Symbol FROM `tickers.roc_values`
         WHERE Compute_date = CAST(current_date() AS STRING)
         ORDER BY roc_close DESC) 
