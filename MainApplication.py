@@ -8,12 +8,12 @@ import datetime as dt
 def main():
     print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
     end = '2022-02-04'
-    Stocks.get_sp500_tickers()
-    Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
-    Stocks.get_roc(30, end)
-    Stocks.get_sharpe(end, 8)
-    Stocks.gen_portfolio(5000)
-    # Plots.plot_prices()
+    # Stocks.get_sp500_tickers()
+    # Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
+    # Stocks.get_roc(30, end)
+    # Stocks.get_sharpe(end, 8)
+    # Stocks.gen_portfolio(5000)
+    Plots.plot_portfolio()
 
 
 if __name__ == "__main__":

@@ -6,10 +6,10 @@ import plotly.graph_objs as go
 # TODO: think about graph types and classes
 class StockPlot:
 
-    def __init__(self, title, prices, roc, mode, filename):
+    def __init__(self, title, prices, values, mode, filename):
         self.title = title
         self.prices = prices
-        self.roc = roc
+        self.values = values
         self.mode = mode
         self.filename = filename
         self.symbols = list(self.prices.Symbol.unique())
@@ -18,38 +18,44 @@ class StockPlot:
         # TODO: make 'fig' customizable in the class
         fig = make_subplots(rows=2,
                             cols=2,
-                            column_widths=[0.7, 0.3],
+                            column_widths=[0.5, 0.5],
                             row_width=[0.3, 0.7],
                             horizontal_spacing=0.05,
                             vertical_spacing=0.1,
-                            specs=[[{}, {}], [{"colspan": 2}, None]],
-                            subplot_titles=['Daily Close', 'Daily Volumes', 'ROC Close'])
+                            specs=[[{}, {}], [{}, {}]],
+                            subplot_titles=['Number Of Securities', 'Daily Closes', 'ROC Close',
+                                            'AVG Daily ROC Change (lOG10)'])
+        fig.add_trace(go.Bar(
+            x=self.values.Securities,
+            y=self.values.Symbol,
+            orientation='h',
+            showlegend=False),
+            row=1,
+            col=1
+        )
         for symbol in self.symbols:
             fig.add_trace(go.Scatter(
                     x=self.prices[self.prices.Symbol == symbol].Date,
                     y=self.prices[self.prices.Symbol == symbol].Close,
                     mode=self.mode,
                     name=symbol,
-                    legendgroup='one'),
-                row=1,
-                col=1
-            )
-            fig.add_trace(go.Scatter(
-                    x=self.prices[self.prices.Symbol == symbol].Date,
-                    y=self.prices[self.prices.Symbol == symbol].Volume,
-                    mode=self.mode,
-                    name=symbol,
-                    legendgroup='one',
-                    showlegend=False),
+                    showlegend=True),
                 row=1,
                 col=2
             )
         fig.add_trace(go.Bar(
-            x=self.roc.Symbol,
-            y=self.roc.roc_close,
+            x=self.values.Symbol,
+            y=self.values.roc_close,
             showlegend=False),
             row=2,
             col=1
+        )
+        fig.add_trace(go.Bar(
+            x=self.values.Symbol,
+            y=self.values.roc_avg_daily_change_log10,
+            showlegend=False),
+            row=2,
+            col=2
         )
         fig.update_layout(title_text=self.title)
         pyo.plot(fig, filename=self.filename)

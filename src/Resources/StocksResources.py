@@ -17,7 +17,7 @@ def get_last_update(end_date):
         query_max_date = "SELECT MAX(Date) AS max_date FROM `tickers.prices`"
         max_date = GCPService.get_df_from_bigquery(query_string=query_max_date).iloc[0, 0]
     except ValueError as err:
-        max_date = '2021-01-01'
+        max_date = '2022-01-01'
     return (dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.datetime.strptime(max_date, '%Y-%m-%d')).days
 
 

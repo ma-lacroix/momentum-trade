@@ -2,10 +2,10 @@ import src.Services.GCPService as GCPService
 import src.Services.PlotService as PlotService
 
 
-def plot_prices():
-    query_prices = "SELECT * FROM tickers.prices ORDER BY Date"
-    query_roc = "SELECT * FROM tickers.roc_values"
+def plot_portfolio():
+    query_prices = "SELECT * FROM tickers.prices t1 JOIN `tickers.portfolio` t2 USING(Symbol) ORDER BY t1.Date"
+    query_portfolio = "SELECT * FROM tickers.portfolio ORDER BY Securities"
     prices = GCPService.get_df_from_bigquery(query_string=query_prices)
-    roc_values = GCPService.get_df_from_bigquery(query_string=query_roc)
-    PlotService.gen_line_plot(prices, roc_values)
+    portfolio = GCPService.get_df_from_bigquery(query_string=query_portfolio)
+    PlotService.gen_line_plot(prices, portfolio)
 
