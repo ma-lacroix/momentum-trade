@@ -13,7 +13,6 @@ from src.Utils.functions import division, log10
 def calculate_roc(df, start_date, end_date):
     all_results = []
     symbols = list(df['Symbol'].unique())
-
     for symbol in symbols:
         # check for missing data
         if (len(df[(df['Symbol'] == symbol) & (df['Date'] == end_date)]['Close']) == 0 or \
@@ -50,7 +49,7 @@ def calculate_roc(df, start_date, end_date):
 @timeit
 def calculate_sharpe(df):
     # TODO: clean this up a bit
-    simulations = 10000
+    simulations = 10000000
     df.set_index('Date', drop=True, inplace=True)
     ret = pd.DataFrame(df / df.shift(1) - 1).fillna(0).reset_index()
     cpp_sharpe = ctypes.CDLL('src/Utils/cpp_sharpe.so')
