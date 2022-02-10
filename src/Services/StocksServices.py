@@ -77,8 +77,7 @@ def gen_sharpe_df(unique_symbols, end_date):
 
 
 def gen_portfolio_df(df, max_budget):
+    print(df)
     for i in range(len(df)):
-        # TODO: max_budget residuals and full shares being rounded up
         df.loc[i, "Securities"] = int(round((max_budget / df.loc[i, "Close"]) * df.loc[i, "Sharpe"]))
-        max_budget -= df.loc[i, "Securities"] * df.loc[i, "Close"]
     return df

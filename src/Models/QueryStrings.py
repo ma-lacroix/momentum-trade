@@ -1,6 +1,6 @@
 class QueryStrings:
 
-    def __init__(self, start_date='2022-01-01', top=10):
+    def __init__(self, start_date='2022-01-01', top=10, pivot_list=['']):
         self.max_date = "SELECT MAX(Date) AS max_date FROM `tickers.prices`"
         self.tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500` ORDER BY 1"
         self.roc_data = f"SELECT * FROM tickers.prices WHERE Date >= '{start_date}'"
