@@ -26,7 +26,6 @@ def get_sp500_prices(backfill, end_date):
     print(f"{backfill} days missing")
     qs = QueryStrings()
     if backfill > 0:
-        # TODO: remove the LIMIT condition
         symbols = list(GCPService.get_df_from_bigquery(query_string=qs.tickers)['Symbol'])
         prices = YahooService.send_yahoo_request(symbols, get_date(backfill, end_date), end_date)
         GCPService.upload_df_to_bigquery(df=prices, destination="tickers.prices", write_type="append")

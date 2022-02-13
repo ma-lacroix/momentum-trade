@@ -27,3 +27,6 @@ class QueryStrings:
             SELECT * FROM sharpe_values JOIN (SELECT * FROM roc_values) USING(Symbol) 
                 JOIN (SELECT * FROM last_close) USING(Symbol) ORDER BY Sharpe DESC
             """
+        self.plot_prices = "SELECT * FROM tickers.prices t1 JOIN `tickers.portfolio` t2 " \
+                           "USING(Symbol) ORDER BY t1.Date"
+        self.plot_portfolio = "SELECT * FROM tickers.portfolio ORDER BY Securities"

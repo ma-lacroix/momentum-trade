@@ -1,11 +1,12 @@
 import json
+import os
 from google.oauth2 import service_account
 
 
 class GCPClient:
 
     def __init__(self):
-        self.key = 'src/key/key.json'  # GCP SA
+        self.key = os.environ['gcp_key']  # GCP SA
         self.project_id = self.get_project()
         self.creds = self.get_creds()
 

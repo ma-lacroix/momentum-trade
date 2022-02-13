@@ -2,6 +2,7 @@ from src.Utils.functions import timeit
 import src.Resources.StocksResources as Stocks
 import src.Resources.PlotsResources as Plots
 import datetime as dt
+import os
 
 
 @timeit
