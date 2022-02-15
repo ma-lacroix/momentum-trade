@@ -27,6 +27,10 @@ class QueryStrings:
             SELECT * FROM sharpe_values JOIN (SELECT * FROM roc_values) USING(Symbol) 
                 JOIN (SELECT * FROM last_close) USING(Symbol) ORDER BY Sharpe DESC
             """
+        self.portfolio_performance = "SELECT t1.Date AS Date, ROUND(SUM(t1.Close*Securities),2) AS Performance " \
+                                     "FROM `tickers.prices` t1 JOIN `tickers.portfolio` t2 " \
+                                     "USING(Symbol) GROUP BY 1 ORDER BY 1"
         self.plot_prices = "SELECT * FROM tickers.prices t1 JOIN `tickers.portfolio` t2 " \
                            "USING(Symbol) ORDER BY t1.Date"
         self.plot_portfolio = "SELECT * FROM tickers.portfolio ORDER BY Securities"
+        self.plot_portfolio_performance = "SELECT * FROM tickers.portfolio_performance ORDER BY 1"

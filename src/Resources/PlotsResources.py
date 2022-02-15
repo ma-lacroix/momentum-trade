@@ -7,5 +7,6 @@ def plot_portfolio():
     qs = QueryStrings()
     prices = GCPService.get_df_from_bigquery(query_string=qs.plot_prices)
     portfolio = GCPService.get_df_from_bigquery(query_string=qs.plot_portfolio)
-    PlotService.gen_line_plot(prices, portfolio)
+    portfolio_performance = GCPService.get_df_from_bigquery(query_string=qs.plot_portfolio_performance)
+    PlotService.gen_line_plot(prices, portfolio, portfolio_performance)
 

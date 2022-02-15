@@ -6,10 +6,11 @@ import plotly.graph_objs as go
 # TODO: think about graph types and classes
 class StockPlot:
 
-    def __init__(self, title, prices, values, mode, filename):
+    def __init__(self, title, prices, values, performance, mode, filename):
         self.title = title
         self.prices = prices
         self.values = values
+        self.performance = performance
         self.mode = mode
         self.filename = filename
         self.symbols = list(self.prices.Symbol.unique())
@@ -19,12 +20,12 @@ class StockPlot:
         fig = make_subplots(rows=2,
                             cols=2,
                             column_widths=[0.5, 0.5],
-                            row_width=[0.3, 0.7],
+                            row_width=[0.5, 0.5],
                             horizontal_spacing=0.05,
                             vertical_spacing=0.1,
                             specs=[[{}, {}], [{}, {}]],
                             subplot_titles=['Number Of Securities', 'Daily Closes', 'ROC Close',
-                                            'AVG Daily ROC Change (lOG10)'])
+                                            'Portfolio performance'])
         fig.add_trace(go.Bar(
             x=self.values.Securities,
             y=self.values.Symbol,
@@ -44,15 +45,16 @@ class StockPlot:
                 col=2
             )
         fig.add_trace(go.Bar(
-            x=self.values.Symbol,
-            y=self.values.roc_close,
+            x=self.values.roc_close,
+            y=self.values.Symbol,
+            orientation='h',
             showlegend=False),
             row=2,
             col=1
         )
-        fig.add_trace(go.Bar(
-            x=self.values.Symbol,
-            y=self.values.roc_avg_daily_change_log10,
+        fig.add_trace(go.Scatter(
+            x=self.performance.Date,
+            y=self.performance.Performance,
             showlegend=False),
             row=2,
             col=2

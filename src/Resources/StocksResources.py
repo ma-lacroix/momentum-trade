@@ -58,3 +58,11 @@ def gen_portfolio(max_budget):
     portfolio_df = StockService.gen_portfolio_df(portfolio_data, max_budget)
     GCPService.upload_df_to_bigquery(df=portfolio_df, destination="tickers.portfolio",
                                      write_type="replace")
+
+
+def gen_portfolio_performance():
+    qs = QueryStrings()
+    portfolio_performance = GCPService.get_df_from_bigquery(query_string=qs.portfolio_performance)
+    # TODO: checks for the portfolio_performance
+    GCPService.upload_df_to_bigquery(df=portfolio_performance, destination="tickers.portfolio_performance",
+                                     write_type="replace")
