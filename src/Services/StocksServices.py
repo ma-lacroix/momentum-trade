@@ -17,7 +17,7 @@ def calculate_roc(df, start_date, end_date):
         # check for missing data
         if (len(df[(df['Symbol'] == symbol) & (df['Date'] == end_date)]['Close']) == 0 or \
                 len(df[(df['Symbol'] == symbol) & (df['Date'] == start_date)]['Close']) == 0):
-            all_results.append(StockData(symbol, start_date, end_date, 'Broken', 0, 0, 0,
+            all_results.append(StockData(symbol, start_date, end_date, 'Broken', 0, 0, 0, 0,
                                          0, 0, 0).df)
         # extract the data from the DF
         else:
@@ -41,8 +41,9 @@ def calculate_roc(df, start_date, end_date):
             roc_avg_daily_change_log10 = math.log10(roc_avg_daily_change)
 
             # instance of stock data class
-            all_results.append(StockData(symbol, start_date, end_date, 'OK', roc_close, roc_high_low, roc_close_open,
-                                         roc_close_open_log10, roc_avg_daily_change, roc_avg_daily_change_log10).df)
+            all_results.append(StockData(symbol, start_date, end_date, 'OK', current_close, roc_close, roc_high_low,
+                                         roc_close_open, roc_close_open_log10, roc_avg_daily_change,
+                                         roc_avg_daily_change_log10).df)
     return pd.concat(all_results).reset_index(drop=True)
 
 

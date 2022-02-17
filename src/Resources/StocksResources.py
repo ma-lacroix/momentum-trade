@@ -26,6 +26,7 @@ def get_sp500_prices(backfill, end_date):
     print(f"{backfill} days missing")
     qs = QueryStrings()
     if backfill > 0:
+        # TODO: START DATE IN QUERY WRONG
         symbols = list(GCPService.get_df_from_bigquery(query_string=qs.tickers)['Symbol'])
         prices = YahooService.send_yahoo_request(symbols, get_date(backfill, end_date), end_date)
         GCPService.upload_df_to_bigquery(df=prices, destination="tickers.prices", write_type="append")
@@ -41,9 +42,9 @@ def get_roc(window, end_date):
                                      write_type="replace")
 
 
-def get_sharpe(end_date, top):
+def get_sharpe(end_date, top, max_price):
     compile_cpp()  # compile c++ code
-    qs = QueryStrings(top=top)
+    qs = QueryStrings(top=top, max_price=max_price)
     unique_symbols = list(GCPService.get_df_from_bigquery(query_string=qs.unique_symbols)['Symbols'])
     # TODO: exclude mergers stocks
     sharpe_data = GCPService.get_df_from_bigquery(query_string=bq_pivot_table(unique_symbols))
