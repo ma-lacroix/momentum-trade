@@ -45,6 +45,7 @@ def get_sharpe(end_date, top):
     compile_cpp()  # compile c++ code
     qs = QueryStrings(top=top)
     unique_symbols = list(GCPService.get_df_from_bigquery(query_string=qs.unique_symbols)['Symbols'])
+    # TODO: exclude mergers stocks
     sharpe_data = GCPService.get_df_from_bigquery(query_string=bq_pivot_table(unique_symbols))
     StockService.calculate_sharpe(sharpe_data)
     sharpe_df = StockService.gen_sharpe_df(unique_symbols, end_date)

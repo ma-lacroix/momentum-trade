@@ -24,8 +24,8 @@ class StockPlot:
                             horizontal_spacing=0.05,
                             vertical_spacing=0.1,
                             specs=[[{}, {}], [{}, {}]],
-                            subplot_titles=['Number Of Securities', 'Daily Closes', 'ROC Close',
-                                            'Portfolio performance'])
+                            subplot_titles=['Suggested Securities', 'Daily Closes', 'ROC Close',
+                                            'Suggested Portfolio Performance'])
         fig.add_trace(go.Bar(
             x=self.values.Securities,
             y=self.values.Symbol,
@@ -36,11 +36,11 @@ class StockPlot:
         )
         for symbol in self.symbols:
             fig.add_trace(go.Scatter(
-                    x=self.prices[self.prices.Symbol == symbol].Date,
-                    y=self.prices[self.prices.Symbol == symbol].Close,
-                    mode=self.mode,
-                    name=symbol,
-                    showlegend=True),
+                x=self.prices[self.prices.Symbol == symbol].Date,
+                y=self.prices[self.prices.Symbol == symbol].Close,
+                mode=self.mode,
+                name=symbol,
+                showlegend=True),
                 row=1,
                 col=2
             )
@@ -59,5 +59,10 @@ class StockPlot:
             row=2,
             col=2
         )
-        fig.update_layout(title_text=self.title)
+        fig.update_layout(title_text=self.title, title_x=0.5,
+                          font_family="verdana",
+                          font_color="grey",
+                          title_font_family="arial",
+                          title_font_color="black",
+                          title_font_size=26)
         pyo.plot(fig, filename=self.filename)
