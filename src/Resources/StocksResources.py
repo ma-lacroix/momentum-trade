@@ -19,7 +19,7 @@ def get_last_update(end_date):
         max_date = GCPService.get_df_from_bigquery(query_string=qs.max_date).iloc[0, 0]
     except ValueError as err:
         max_date = '2022-01-01'
-    return (dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.datetime.strptime(max_date, '%Y-%m-%d')).days
+    return (dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.datetime.strptime(max_date, '%Y-%m-%d')).days - 1
 
 
 def get_sp500_prices(backfill, end_date):
