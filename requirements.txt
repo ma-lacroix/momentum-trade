@@ -1,0 +1,16 @@
+csv
+ctypes
+google-auth
+google-cloud
+math
+numpy
+oauthlib
+os
+pandas
+pandas-datareader
+pandas-gbq
+plotly
+regex
+requests
+requests-oauthlib
+tkinter
