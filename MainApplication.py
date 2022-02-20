@@ -1,20 +1,23 @@
 from src.Utils.functions import timeit
-import src.Resources.StocksResources as Stocks
-import src.Resources.PlotsResources as Plots
-import datetime as dt
+from src.Models.MainUI import MainUI
+# import src.Resources.StocksResources as Stocks
+# import src.Resources.PlotsResources as Plots
+# import datetime as dt
 
 
 @timeit
 def main():
-    print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
-    end = '2022-02-18'
-    Stocks.get_sp500_tickers()
-    Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
-    Stocks.get_roc(30, end)
-    Stocks.get_sharpe(end, 10, 100)
-    Stocks.gen_portfolio(2250)
-    Stocks.gen_portfolio_performance()
-    Plots.plot_portfolio()
+    # print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
+    # end = '2022-02-18'
+    # Stocks.get_sp500_tickers()
+    # Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
+    # Stocks.get_roc(30, end)
+    # Stocks.get_sharpe(end, 10, 100)
+    # Stocks.gen_portfolio(2250)
+    # Stocks.gen_portfolio_performance()
+    # Plots.plot_portfolio()
+    main_ui = MainUI("Test")
+    main_ui.mainloop()
 
 
 if __name__ == "__main__":
