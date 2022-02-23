@@ -16,8 +16,8 @@ def main():
     # Stocks.gen_portfolio(2250)
     # Stocks.gen_portfolio_performance()
     # Plots.plot_portfolio()
-    main_ui = MainUI("Test")
-    main_ui.mainloop()
+    window = MainUI('test')
+    window.mainloop()
 
 
 if __name__ == "__main__":
