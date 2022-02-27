@@ -6,7 +6,7 @@ import datetime as dt
 @timeit
 def main():
     print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
-    window = MainUI("StockMaster 2000")  # Name is a silly reference to all those tools from the 1990s
+    window = MainUI("Momentum Trader")  # Name is a silly reference to all those tools from the 1990s
     window.mainloop()
 
 

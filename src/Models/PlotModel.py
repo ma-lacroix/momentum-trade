@@ -65,4 +65,11 @@ class StockPlot:
                           title_font_family="arial",
                           title_font_color="black",
                           title_font_size=26)
+        fig.layout.images = [dict(
+            source="",
+            xref="paper", yref="paper",
+            x=0.1, y=1.05,
+            sizex=0.4, sizey=0.4,
+            xanchor="center", yanchor="bottom"
+        )]
         pyo.plot(fig, filename=self.filename)
