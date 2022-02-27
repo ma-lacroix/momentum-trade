@@ -66,10 +66,10 @@ class StockPlot:
                           title_font_color="black",
                           title_font_size=26)
         fig.layout.images = [dict(
-            source="",
+            source="https://raw.githubusercontent.com/ma-lacroix/momentum-trade/main/images/logo.png",
             xref="paper", yref="paper",
-            x=0.1, y=1.05,
-            sizex=0.4, sizey=0.4,
-            xanchor="center", yanchor="bottom"
+            x=0.12, y=1.17,
+            sizex=0.15, sizey=0.15,
+            xanchor="right", yanchor="top"
         )]
         pyo.plot(fig, filename=self.filename)
