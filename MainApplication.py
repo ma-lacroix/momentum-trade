@@ -1,10 +1,12 @@
 from src.Utils.functions import timeit
-from src.Resources.UserInterfaceResource import MainUI
+from UserInterface import MainUI
+import datetime as dt
 
 
 @timeit
 def main():
-    window = MainUI("StockMaster 2000")
+    print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
+    window = MainUI("StockMaster 2000")  # Name is a silly reference to all those tools from the 1990s
     window.mainloop()
 
 

@@ -1,4 +1,3 @@
-import datetime as dt
 import tkinter as tk
 from tkinter import ttk
 import src.Resources.StocksResources as Stocks
@@ -11,7 +10,7 @@ class MainUI(tk.Tk):
         super().__init__()
 
         self.data_hash = None
-        self.main_color = '#CEC4C2'
+        self.main_color = '#545B52'
         self['background'] = self.main_color
         self.geometry('450x330')
         self.resizable(0, 0)
@@ -25,11 +24,11 @@ class MainUI(tk.Tk):
         # configure style
         self.style = ttk.Style(self)
         self.style.theme_use('alt')
-        self.style.configure('TLabel', font=('Helvetica', 18), background=self.main_color)
-        self.style.configure('TButton', font=('Helvetica', 18))
+        self.style.configure('TLabel', font=('Helvetica', 13), background=self.main_color, foreground='white')
+        self.style.configure('TButton', font=('Helvetica', 13))
 
         # heading style
-        self.style.configure('Heading.TLabel', font=('Helvetica', 20))
+        self.style.configure('Heading.TLabel', font=('Helvetica', 12))
 
         # configure the grid
         self.columnconfigure(0, weight=1)
@@ -52,7 +51,8 @@ class MainUI(tk.Tk):
         roc_entry = ttk.Entry(self, textvariable=self.roc_timeframe, **entry_font)
         stocks_entry = ttk.Entry(self, textvariable=self.total_number_stocks, **entry_font)
         price_entry = ttk.Entry(self, textvariable=self.max_security_price, **entry_font)
-        entry_button = ttk.Button(self, text="Submit", command=self.gen_hash)
+        # entry_button = ttk.Button(self, text="Submit", command=self.gen_hash)
+        entry_button = ttk.Button(self, text="Submit")
         launch_button = ttk.Button(self, text="Launch app", command=self.launch_app)
 
         # Grid
@@ -69,16 +69,19 @@ class MainUI(tk.Tk):
         launch_button.grid(column=1, row=6, sticky=tk.E, **paddings)
 
     def gen_hash(self):
-        self.data_hash = {
-            'roc_timeframe': self.roc_timeframe.get(),
-            'total_stocks': self.total_number_stocks.get(),
-            'max_security_price': self.max_security_price.get(),
-            'total_budget': self.total_budget.get()
-        }
+        try:
+            self.data_hash = {
+                'roc_timeframe': self.roc_timeframe.get(),
+                'total_stocks': self.total_number_stocks.get(),
+                'max_security_price': self.max_security_price.get(),
+                'total_budget': self.total_budget.get()
+            }
+        except ValueError as err:
+            print(f"Enter integers only - {str(err)}")
 
     def launch_app(self):
         # TODO: add some data verification here
-        print(f"Starting project {dt.datetime.today().strftime('%Y-%m-%d')}")
+        self.gen_hash()
         end = '2022-02-18'
         Stocks.get_sp500_tickers()
         Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
@@ -87,4 +90,3 @@ class MainUI(tk.Tk):
         Stocks.gen_portfolio(self.data_hash['total_budget'])
         Stocks.gen_portfolio_performance()
         Plots.plot_portfolio()
-
