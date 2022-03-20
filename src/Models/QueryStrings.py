@@ -3,7 +3,15 @@ class QueryStrings:
     def __init__(self, start_date='2022-01-01', top=10, pivot_list=[''], max_price=5000):
         self.max_date = "SELECT MAX(Date) AS max_date FROM `tickers.prices`"
         self.tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500` ORDER BY 1"
-        self.roc_data = f"SELECT * FROM tickers.prices WHERE Date >= '{start_date}'"
+        self.roc_data = f"""
+            -- Using MIN row value as Yahoo sometimes returns more than a single row per stock
+            SELECT
+                Date, Symbol, MIN(High) AS High, MIN(Low) AS Low, MIN(Open) AS Open, 
+                MIN(Close) AS Close, MIN(Volume) AS Volume 
+            FROM `mythical-harbor-167208.tickers.prices`  
+            WHERE Date >= '{start_date}'
+            GROUP BY 1,2
+            """
         self.unique_symbols = f"""
             SELECT Symbol AS Symbols FROM
                 (SELECT Symbol FROM `tickers.roc_values`

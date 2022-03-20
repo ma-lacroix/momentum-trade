@@ -18,10 +18,10 @@ def timeit(func):
 def get_date(window, end_date):
     date = dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.timedelta(days=window)
     # weekend
-    if date.date().weekday() == 5:  # Saturday -> go to Friday
+    if date.date().weekday() == 5:  # Saturday
         date -= dt.timedelta(days=1)
-    if date.date().weekday() == 6:  # Sunday -> go to Monday
-        date += dt.timedelta(days=1)
+    if date.date().weekday() == 6:  # Sunday
+        date -= dt.timedelta(days=2)
     return date.strftime('%Y-%m-%d')
 
 

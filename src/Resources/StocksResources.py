@@ -19,7 +19,11 @@ def get_last_update(end_date):
         max_date = GCPService.get_df_from_bigquery(query_string=qs.max_date).iloc[0, 0]
     except ValueError as err:
         max_date = '2022-01-01'
-    return (dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.datetime.strptime(max_date, '%Y-%m-%d')).days - 1
+    # TODO: can be -1 sometimes
+    if max_date == end_date:
+        return max_date
+    else:
+        return (dt.datetime.strptime(end_date, '%Y-%m-%d') - dt.datetime.strptime(max_date, '%Y-%m-%d')).days
 
 
 def get_sp500_prices(backfill, end_date):
@@ -35,9 +39,10 @@ def get_sp500_prices(backfill, end_date):
 def get_roc(window, end_date):
     # TODO: something to do a sanity check for the produced data
     start_date = get_date(window, end_date)
+    end_date_adj = get_date(0, end_date)    # If a weekend
     qs = QueryStrings(start_date=start_date)
     roc_data = GCPService.get_df_from_bigquery(query_string=qs.roc_data)
-    all_results = StockService.calculate_roc(roc_data, start_date, end_date)
+    all_results = StockService.calculate_roc(roc_data, start_date, end_date_adj)
     GCPService.upload_df_to_bigquery(df=np.round(all_results, 3), destination="tickers.roc_values",
                                      write_type="replace")
 
