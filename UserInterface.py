@@ -102,8 +102,8 @@ class MainUI(tk.Tk):
     def launch_app(self):
         self.gen_hash()
         end = self.data_hash['end_date']
-        Stocks.get_sp500_tickers()
-        Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
+        # Stocks.get_sp500_tickers()
+        # Stocks.get_sp500_prices(Stocks.get_last_update(end), end)
         Stocks.get_roc(self.data_hash['roc_timeframe'], end)
         Stocks.get_sharpe(end, self.data_hash['total_stocks'], self.data_hash['max_security_price'])
         Stocks.gen_portfolio(self.data_hash['total_budget'])

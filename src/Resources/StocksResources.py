@@ -40,7 +40,7 @@ def get_roc(window, end_date):
     # TODO: something to do a sanity check for the produced data
     start_date = get_date(window, end_date)
     end_date_adj = get_date(0, end_date)    # If a weekend
-    qs = QueryStrings(start_date=start_date)
+    qs = QueryStrings(start_date=start_date, kpi='roc_avg_daily_change_log10')  # Still testing different KPIs
     roc_data = GCPService.get_df_from_bigquery(query_string=qs.roc_data)
     all_results = StockService.calculate_roc(roc_data, start_date, end_date_adj)
     GCPService.upload_df_to_bigquery(df=np.round(all_results, 3), destination="tickers.roc_values",

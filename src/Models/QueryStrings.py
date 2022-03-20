@@ -1,6 +1,6 @@
 class QueryStrings:
 
-    def __init__(self, start_date='2022-01-01', top=10, pivot_list=[''], max_price=5000):
+    def __init__(self, start_date='2022-01-01', top=10, pivot_list=[''], max_price=5000, kpi='roc_close'):
         self.max_date = "SELECT MAX(Date) AS max_date FROM `tickers.prices`"
         self.tickers = "SELECT DISTINCT(Symbol) as Symbol FROM `tickers.sp500` ORDER BY 1"
         self.roc_data = f"""
@@ -17,7 +17,7 @@ class QueryStrings:
                 (SELECT Symbol FROM `tickers.roc_values`
                 WHERE Compute_date = CAST(current_date() AS STRING)
                 AND close <= {max_price} 
-                ORDER BY roc_close DESC) 
+                ORDER BY {kpi} DESC) 
             LIMIT {top}"""
         self.portfolio = """
             WITH last_close AS (
